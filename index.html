@@ -6,26 +6,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>gestion-tramites</title>
   </head>
-  <body class="bg-slate-900 text-slate-100 min-h-screen p-4 md:p-8">
+  <body class="bg-brand-50 text-slate-100 min-h-screen p-4 md:p-8 font-sans">
 
     <header class="flex flex-col md:flex-row justify-between items-center border-b border-slate-700 pb-6 mb-8 gap-4">
-    <h1 class="text-3xl font-black text-white tracking-tight text-center md:text-left">Gestión <span class="text-blue-500">Trámites</span></h1>
+    <h1 class="text-3xl font-black text-slate-900 tracking-tight text-center md:text-left">Gestión <span class="text-brand-500">Trámites</span></h1>
     <nav>
         <ul class="flex gap-4 md:gap-6 items-center">
             <li>
-                <a href="#" class="flex items-center gap-2 text-blue-400 hover:text-blue-300 font-medium" aria-label="Ir a la página de inicio">
+                <a href="#" class="flex items-center gap-2 text-slate-600 hover:text-brand-500 font-medium" aria-label="Ir a la página de inicio">
                     <i data-lucide="home" class="w-4 h-4"></i>
                     <span>Inicio</span>
                 </a>
             </li>
             <li>
-                <a href="#" class="flex items-center gap-2 text-slate-400 hover:text-blue-300 transition-colors text-sm md:text-base" aria-label="Ver mis proyectos de trámites">
+                <a href="#" class="flex items-center gap-2 text-slate-600 hover:text-brand-500 transition-colors text-sm md:text-base" aria-label="Ver mis proyectos de trámites">
                     <i data-lucide="briefcase" class="w-4 h-4"></i>
                     <span>Proyectos</span>
                 </a>
             </li>
             <li>
-                <a href="#" class="flex items-center gap-2 text-slate-400 hover:text-blue-300 transition-colors text-sm md:text-base" aria-label="Ver mi perfil de usuario">
+                <a href="#" class="flex items-center gap-2 text-slate-600 hover:text-brand-500 transition-colors text-sm md:text-base" aria-label="Ver mi perfil de usuario">
                     <i data-lucide="user" class="w-4 h-4"></i>
                     <span>Perfil</span>
                 </a>
@@ -37,34 +37,34 @@
     <main class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         <div id="contenedor-tramites" class="col-span-1 lg:col-span-9 space-y-12 order-2 lg:order-1">
             <section class="space-y-6">
-                <h2 class="text-xl md:text-2xl font-bold mb-4 text-emerald-400">Mis tramites recientes</h2>
+                <h2 class="text-xl md:text-2xl font-bold mb-4 text-slate-800">Mis tramites recientes</h2>
 
-                <article data-estado="en-progreso" class="bg-slate-800 p-5 rounded-xl border border-slate-700 hover:border-blue-500/50 transition-all shadow-lg">
+                <article data-estado="en-progreso" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-all">
                     <div class="flex justify-between items-start">
                         <div>
-                            <h3 class="text-xl font-semibold">Renovacion de pasaporte</h3>
+                            <h3 class="text-xl font-bold text-slate-900">Renovacion de pasaporte</h3>
                             <p class="flex items-center gap-2 text-slate-400 text-sm mt-1 italic">
                                 <i data-lucide="clock" class="w-3.5 h-3.5"></i>
                                 <span>Fecha limite: 15 de abril</span>    
                             </p>
                         </div>
-                        <span class="flex items-center gap-2 bg-amber-500/10 text-yellow-500 text-xs font-bold px-3 py-1 rounded-full border border-amber-200/20" aria-label="Estado: En progreso">
+                        <span class="flex items-center gap-2 bg-amber-100 text-amber-700 border-amber-200 text-xs font-bold px-3 py-1 rounded-full" aria-label="Estado: En progreso">
                             <i data-lucide="alert-circle" class="w-3 h-3"></i>
                             En progreso
                         </span>
                     </div>
                 </article>
 
-                <article data-estado="completado" class="bg-slate-800 p-5 rounded-xl border border-slate-700 hover:border-blue-500/50 transition-all shadow-lg">
+                <article data-estado="completado" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-all">
                     <div class="flex justify-between items-start">
                         <div>
-                            <h3 class="text-xl font-bold text-slate-100">Inscripcion universitaria</h3>
+                            <h3 class="text-xl font-bold text-slate-900">Inscripcion universitaria</h3>
                             <p class="flex items-center gap-2 text-slate-400 text-sm mt-1 italic">
                                 <i data-lucide="clock" class="w-3.5 h-3.5"></i>
                                 <span>Documentos enviados</span>
                             </p>
                         </div>
-                        <span class="flex items-center gap-2 bg-emerald-500/10 text-emerald-500 text-xs font-bold px-3 py-1 rounded-full border border-emerald-500/20" aria-label="Estado: Completado">
+                        <span class="flex items-center gap-2 bg-emerald-100 text-emerald-700 border-emerald-200 text-xs font-bold px-3 py-1 rounded-full" aria-label="Estado: Completado">
                             <i data-lucide="check-circle-2" class="w-3 h-3"></i>
                             Completado    
                         </span>
@@ -73,18 +73,18 @@
             </section>
 
             <section class="space-y-6">
-                <h2 class="text-xl md:text-2xl font-bold mb-4 text-emerald-400">Tramites administrativos</h2>
+                <h2 class="text-xl md:text-2xl font-bold mb-4 text-slate-800">Tramites administrativos</h2>
 
-                <article data-estado="en-progreso" class="bg-slate-800 p-5 rounded-xl border border-slate-700 hover:border-blue-500/50 transition-all shadow-lg">
+                <article data-estado="en-progreso" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-all">
                     <div class="flex justify-between items-start">
                         <div>
-                            <h3 class="text-xl font-bold text-slate-100">Pago de impuestos</h3>
+                            <h3 class="text-xl font-bold text-slate-900">Pago de impuestos</h3>
                             <p class="flex items-center gap-2 text-slate-400 text-sm mt-1 italic">
                                 <i data-lucide="clock" class="w-3.5 h-3.5"></i>
                                 <span>Fecha limite: 30 de abril</span>
                             </p>
                         </div>
-                        <span class="flex items-center gap-2 bg-amber-500/10 text-yellow-500 text-xs font-bold px-3 py-1 rounded-full border border-amber-200/20" aria-label="Estado: En progreso">
+                        <span class="flex items-center gap-2 bg-amber-100 text-amber-700 border-amber-200 text-xs font-bold px-3 py-1 rounded-full" aria-label="Estado: En progreso">
                             <i data-lucide="alert-circle" class="w-3 h-3"></i>
                             En progreso
                         </span>
@@ -93,18 +93,18 @@
             </section>
 
             <section class="space-y-6">
-                <h2 class="text-xl md:text-2xl font-bold mb-4 text-emerald-400">Tramites personales</h2>
+                <h2 class="text-xl md:text-2xl font-bold mb-4 text-slate-800">Tramites personales</h2>
 
-                <article data-estado="completado" class="bg-slate-800 p-5 rounded-xl border border-slate-700 hover:border-blue-500/50 transition-all shadow-lg">
+                <article data-estado="completado" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-all">
                     <div class="flex justify-between items-start">
                         <div>
-                            <h3 class="text-xl font-bold text-slate-100">Renovacion de licencia de conducir</h3>
+                            <h3 class="text-xl font-bold text-slate-900">Renovacion de licencia de conducir</h3>
                             <p class="flex items-center gap-2 text-slate-400 text-sm mt-1 italic">
                                 <i data-lucide="clock" class="w-3.5 h-3.5"></i>
                                 <span>Fecha limite: 30 de abril</span>
                             </p>
                         </div>
-                        <span class="flex items-center gap-2 bg-emerald-500/10 text-emerald-500 text-xs font-bold px-3 py-1 rounded-full border border-emerald-500/20" aria-label="Estado: Completado">
+                        <span class="flex items-center gap-2 bg-emerald-100 text-emerald-700 border-emerald-200 text-xs font-bold px-3 py-1 rounded-full" aria-label="Estado: Completado">
                             <i data-lucide="check-circle-2" class="w-3 h-3"></i>
                             Completado    
                         </span>
@@ -113,8 +113,8 @@
             </section>
         </div>
         <aside class="col-span-1 lg:col-span-3 sticky top-8 h-fit order-1 lg:order-2">
-            <div class="bg-blue-900/10 p-5 rounded-xl border border-blue-500/20">
-                <h2 class="flex items-center gap-2 font-bold text-blue-400 mb-4 text-lg">
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                <h2 class="flex items-center gap-2 font-bold text-slate-600 mb-4 text-lg">
                     <i data-lucide="bell" class="w-4 h-4"></i>Recordatorios
                 </h2>
 
