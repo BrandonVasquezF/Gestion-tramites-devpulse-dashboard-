@@ -13,19 +13,19 @@
     <nav>
         <ul class="flex gap-4 md:gap-6 items-center">
             <li>
-                <a href="#" class="flex items-center gap-2 text-slate-600 hover:text-brand-500 font-medium" aria-label="Ir a la página de inicio">
+                <a href="#" class="flex items-center gap-2 text-slate-600 hover:text-brand-500 font-medium hover:bg-brand-50 px-3 py-2 rounded-lg transition-colors active:scale-95" aria-label="Ir a la página de inicio">
                     <i data-lucide="home" class="w-4 h-4"></i>
                     <span>Inicio</span>
                 </a>
             </li>
             <li>
-                <a href="#" class="flex items-center gap-2 text-slate-600 hover:text-brand-500 transition-colors text-sm md:text-base" aria-label="Ver mis proyectos de trámites">
+                <a href="#" class="flex items-center gap-2 text-slate-600 hover:bg-brand-50 px-3 py-2 rounded-lg transition-colors active:scale-95" aria-label="Ver mis proyectos de trámites">
                     <i data-lucide="briefcase" class="w-4 h-4"></i>
                     <span>Proyectos</span>
                 </a>
             </li>
             <li>
-                <a href="#" class="flex items-center gap-2 text-slate-600 hover:text-brand-500 transition-colors text-sm md:text-base" aria-label="Ver mi perfil de usuario">
+                <a href="#" class="flex items-center gap-2 text-slate-600 hover:text-brand-500 hover:bg-brand-50 px-3 py-2 rounded-lg transition-colors active:scale-95" aria-label="Ver mi perfil de usuario">
                     <i data-lucide="user" class="w-4 h-4"></i>
                     <span>Perfil</span>
                 </a>
@@ -39,7 +39,7 @@
             <section class="space-y-6">
                 <h2 class="text-xl md:text-2xl font-bold mb-4 text-slate-800">Mis tramites recientes</h2>
 
-                <article data-estado="en-progreso" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-all">
+                <article data-estado="en-progreso" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm transition-all duration-300 group hover:shadow-lg hover:-translate-y-1 cursor-pointer">
                     <div class="flex justify-between items-start">
                         <div>
                             <h3 class="text-xl font-bold text-slate-900">Renovacion de pasaporte</h3>
@@ -48,14 +48,14 @@
                                 <span>Fecha limite: 15 de abril</span>    
                             </p>
                         </div>
-                        <span class="flex items-center gap-2 bg-amber-100 text-amber-700 border-amber-200 text-xs font-bold px-3 py-1 rounded-full" aria-label="Estado: En progreso">
+                        <span class="bg-amber-100 text-amber-700 border-amber-200 text-xs font-medium px-3 py-1 rounded-full flex items-center gap-2 group-hover:bg-amber-400 group-hover:text-amber-950 transition-colors duration-200" aria-label="Estado: En progreso">
                             <i data-lucide="alert-circle" class="w-3 h-3"></i>
                             En progreso
                         </span>
                     </div>
                 </article>
 
-                <article data-estado="completado" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-all">
+                <article data-estado="completado" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm transition-all duration-300 group hover:shadow-lg hover:-translate-y-1 cursor-pointer">
                     <div class="flex justify-between items-start">
                         <div>
                             <h3 class="text-xl font-bold text-slate-900">Inscripcion universitaria</h3>
@@ -64,7 +64,7 @@
                                 <span>Documentos enviados</span>
                             </p>
                         </div>
-                        <span class="flex items-center gap-2 bg-emerald-100 text-emerald-700 border-emerald-200 text-xs font-bold px-3 py-1 rounded-full" aria-label="Estado: Completado">
+                        <span class="bg-emerald-100 text-emerald-700 border-emerald-200 px-3 py-1 rounded-full text-xs font-medium flex items-center gap-2 group-hover:bg-emerald-500 group-hover:text-white transition-colors duration-200" aria-label="Estado: Completado">
                             <i data-lucide="check-circle-2" class="w-3 h-3"></i>
                             Completado    
                         </span>
@@ -75,7 +75,7 @@
             <section class="space-y-6">
                 <h2 class="text-xl md:text-2xl font-bold mb-4 text-slate-800">Tramites administrativos</h2>
 
-                <article data-estado="en-progreso" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-all">
+                <article data-estado="en-progreso" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm transition-all duration-300 group hover:shadow-lg hover:-translate-y-1 cursor-pointer">
                     <div class="flex justify-between items-start">
                         <div>
                             <h3 class="text-xl font-bold text-slate-900">Pago de impuestos</h3>
@@ -84,7 +84,7 @@
                                 <span>Fecha limite: 30 de abril</span>
                             </p>
                         </div>
-                        <span class="flex items-center gap-2 bg-amber-100 text-amber-700 border-amber-200 text-xs font-bold px-3 py-1 rounded-full" aria-label="Estado: En progreso">
+                        <span class="bg-amber-100 text-amber-700 border-amber-200 text-xs font-medium px-3 py-1 rounded-full flex items-center gap-2 group-hover:bg-amber-400 group-hover:text-amber-950 transition-colors duration-200" aria-label="Estado: En progreso">
                             <i data-lucide="alert-circle" class="w-3 h-3"></i>
                             En progreso
                         </span>
@@ -95,7 +95,7 @@
             <section class="space-y-6">
                 <h2 class="text-xl md:text-2xl font-bold mb-4 text-slate-800">Tramites personales</h2>
 
-                <article data-estado="completado" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-all">
+                <article data-estado="completado" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm transition-all duration-300 group hover:shadow-lg hover:-translate-y-1 cursor-pointer">
                     <div class="flex justify-between items-start">
                         <div>
                             <h3 class="text-xl font-bold text-slate-900">Renovacion de licencia de conducir</h3>
@@ -104,7 +104,7 @@
                                 <span>Fecha limite: 30 de abril</span>
                             </p>
                         </div>
-                        <span class="flex items-center gap-2 bg-emerald-100 text-emerald-700 border-emerald-200 text-xs font-bold px-3 py-1 rounded-full" aria-label="Estado: Completado">
+                        <span class="bg-emerald-100 text-emerald-700 border-emerald-200 px-3 py-1 rounded-full text-xs font-medium flex items-center gap-2 group-hover:bg-emerald-500 group-hover:text-white transition-colors duration-200" aria-label="Estado: Completado">
                             <i data-lucide="check-circle-2" class="w-3 h-3"></i>
                             Completado    
                         </span>
