@@ -1,4 +1,18 @@
-/*@tailwind base;
-@tailwind components;
-@tailwind utilities;*/
-@import "tailwindcss"
+@import "tailwindcss";
+
+html {
+    scroll-behavior: smooth;
+}
+
+/* Forzamos la animación a cualquier icono de campana dentro de un grupo con hover */
+.group:hover [data-lucide="bell"] {
+  animation: bell-ring 2s ease-in-out infinite;
+}
+
+/* Definimos los keyframes aquí también por si acaso el config no los está leyendo */
+@keyframes bell-ring {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(15deg); }
+  50% { transform: rotate(-15deg); }
+  75% { transform: rotate(10deg); }
+}

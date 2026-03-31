@@ -1,22 +1,30 @@
- /** @type {import('tailwindcss').Config} */
+/** @type {import('tailwindcss').Config} */
 export default {
-  // 1. CONTENT: El "Radar"
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
-  // 2. THEME: Tu "Estilo Único"
   theme: {
     extend: {
       colors: {
         brand: {
-          50: '#f8fafc',  // Tu nuevo color de FONDO (casi blanco)
-          500: '#3b82f6', // El azul de tu logo
-          900: '#1e293b', // Color para TEXTOS principales
+          50: '#f8fafc',
+          500: '#3b82f6',
+          900: '#1e293b',
+        },
+      },
+      keyframes: {
+        'bell-ring': {
+          '0%, 100%': { transform: 'rotate(0deg)' },
+          '25%': { transform: 'rotate(15deg)' },
+          '50%': { transform: 'rotate(-15deg)' },
+          '75%': { transform: 'rotate(-10deg)' },
         }
-      }
-    },
-  },
-  // 3. PLUGINS: Las "Expansiones"
+      },
+      animation: {
+        'bell-ring': 'bell-ring 2s ease-in-out infinite',
+      },
+    }, // Aquí cierra el extend
+  }, // Aquí cierra el theme
   plugins: [],
 }
