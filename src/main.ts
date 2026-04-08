@@ -25,6 +25,13 @@ createIcons({
     Layers  // <--- Para "Todos los trámites"
   },
 });
+
+// Detectar preferencia del sistema y aplicar modo oscuro
+if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+  document.documentElement.classList.add('dark');
+} else {
+  document.documentElement.classList.remove('dark');
+}
 /*import typescriptLogo from './assets/typescript.svg'
 import viteLogo from './assets/vite.svg'
 import heroImg from './assets/hero.png'
