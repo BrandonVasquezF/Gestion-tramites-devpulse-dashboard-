@@ -9,7 +9,9 @@ import {
   AlertCircle, 
   //FileText,
   Bell,   // <--- Añadido
-  Layers  // <--- Añadido
+  Layers,  // <--- Añadido
+  Search,
+  PlusCircle
 } from 'lucide';
 
 createIcons({
@@ -22,7 +24,9 @@ createIcons({
     AlertCircle,
     //FileText,
     Bell,   // <--- Para "Recordatorios"
-    Layers  // <--- Para "Todos los trámites"
+    Layers,  // <--- Para "Todos los trámites"
+    Search,
+    PlusCircle
   },
 });
 

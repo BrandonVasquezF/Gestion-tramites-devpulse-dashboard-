@@ -36,6 +36,24 @@
 
     <main class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         <div id="contenedor-tramites" class="col-span-1 lg:col-span-9 space-y-12 order-2 lg:order-1">
+            <section class="mb-8 space-y-4">
+                <div class="flex flex-col md:flex-row gap-4">
+                    <div class="relative flex-1 group">
+                        <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400 group-focus-within:text-brand-500 transition-colors">
+                            <i data-lucide="search" class="w-5 h-5"></i>
+                        </span>
+                        <input type="text" 
+                            placeholder="Buscar trámite por nombre..." 
+                            class="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 bg-white dark:bg-slate-900 dark:border-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 transition-all text-slate-900 dark:text-white"
+                        >
+                    </div>
+
+                    <button class="bg-brand-500 hover:bg-brand-600 text-white font-bold py-3 px-8 rounded-xl transition-all active:scale-95 flex items-center justify-center gap-3 shadow-lg shadow-brand-500/20 whitespace-nowrap">
+                        <i data-lucide="plus-circle" class="w-5 h-5"></i>
+                        Nuevo Trámite
+                    </button>
+                </div>
+            </section>
             <section class="space-y-6">
                 <h2 class="text-xl md:text-2xl font-bold mb-4 text-slate-800 dark:text-white">Mis tramites recientes</h2>
 
