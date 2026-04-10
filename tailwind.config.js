@@ -20,10 +20,15 @@ export default {
           '25%': { transform: 'rotate(15deg)' },
           '50%': { transform: 'rotate(-15deg)' },
           '75%': { transform: 'rotate(-10deg)' },
+        },
+        'fade-in-up': {
+          '0%': { opacity: '0', transform: 'translateY(50px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
         }
       },
       animation: {
         'bell-ring': 'bell-ring 2s ease-in-out infinite',
+        'fade-in-up': 'fade-in-up 3s ease-out forwards',
       },
     }, // Aquí cierra el extend
   }, // Aquí cierra el theme
