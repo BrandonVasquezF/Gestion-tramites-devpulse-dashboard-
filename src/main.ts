@@ -11,7 +11,9 @@ import {
   Bell,   // <--- Añadido
   Layers,  // <--- Añadido
   Search,
-  PlusCircle
+  PlusCircle,
+  ArchiveX,
+  Plus
 } from 'lucide';
 
 createIcons({
@@ -26,7 +28,9 @@ createIcons({
     Bell,   // <--- Para "Recordatorios"
     Layers,  // <--- Para "Todos los trámites"
     Search,
-    PlusCircle
+    PlusCircle,
+    ArchiveX,
+    Plus
   },
 });
 

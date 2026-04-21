@@ -33,3 +33,25 @@ html {
     animation: fade-in-up 0.8s ease-out forwards;
   }
 }
+
+/* Personalización del scrollbar para navegadores modernos */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1; /* slate-300 */
+  border-radius: 10px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #334155; /* slate-700 */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3b82f6; /* brand-500 */
+}
