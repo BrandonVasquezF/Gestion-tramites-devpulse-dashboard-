@@ -1,102 +1,39 @@
+// --- 1. IMPORTS ---
 import './style.css'
 import { 
-  createIcons, 
-  Home, 
-  Briefcase, 
-  User, 
-  Clock, 
-  CheckCircle2, 
-  AlertCircle, 
-  //FileText,
-  Bell,   // <--- Añadido
-  Layers,  // <--- Añadido
-  Search,
-  PlusCircle,
-  ArchiveX,
-  Plus
+  createIcons, Home, Briefcase, User, Clock, 
+  CheckCircle2, AlertCircle, Bell, Layers, 
+  Search, PlusCircle, ArchiveX, Plus 
 } from 'lucide';
 
+// --- 2. CONFIGURACIONES INICIALES (Iconos y Modo Oscuro) ---
 createIcons({
-  icons: {
-    Home,
-    Briefcase,
-    User,
-    Clock,
-    CheckCircle2,
-    AlertCircle,
-    //FileText,
-    Bell,   // <--- Para "Recordatorios"
-    Layers,  // <--- Para "Todos los trámites"
-    Search,
-    PlusCircle,
-    ArchiveX,
-    Plus
-  },
+  icons: { Home, Briefcase, User, Clock, CheckCircle2, AlertCircle, Bell, Layers, Search, PlusCircle, ArchiveX, Plus },
 });
 
-// Detectar preferencia del sistema y aplicar modo oscuro
 if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
   document.documentElement.classList.add('dark');
-} else {
-  document.documentElement.classList.remove('dark');
 }
-/*import typescriptLogo from './assets/typescript.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import { setupCounter } from './counter.ts'
 
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-<section id="center">
-  <div class="hero">
-    <img src="${heroImg}" class="base" width="170" height="179">
-    <img src="${typescriptLogo}" class="framework" alt="TypeScript logo"/>
-    <img src=${viteLogo} class="vite" alt="Vite logo" />
-  </div>
-  <div>
-    <h1>Get started</h1>
-    <p>Edit <code>src/main.ts</code> and save to test <code>HMR</code></p>
-  </div>
-  <button id="counter" type="button" class="counter"></button>
-</section>
+// --- 3. VARIABLES Y TIPOS  ---
+const appNombre: string = "DevPulse Dashboard";
+const nombreUsuario: string = "Brandon";
+const nombreTramite: string = "Renovación de Matrícula"; // Declarada para el IF
+const esUrgente: boolean = true;                        // Declarada para el IF
 
-<div class="ticks"></div>
+let busquedaActual: string = "";
+let estadoFiltro: string = "todos";
+let totalTramites: number = 3;
 
-<section id="next-steps">
-  <div id="docs">
-    <svg class="icon" role="presentation" aria-hidden="true"><use href="/icons.svg#documentation-icon"></use></svg>
-    <h2>Documentation</h2>
-    <p>Your questions, answered</p>
-    <ul>
-      <li>
-        <a href="https://vite.dev/" target="_blank">
-          <img class="logo" src=${viteLogo} alt="" />
-          Explore Vite
-        </a>
-      </li>
-      <li>
-        <a href="https://www.typescriptlang.org" target="_blank">
-          <img class="button-icon" src="${typescriptLogo}" alt="">
-          Learn more
-        </a>
-      </li>
-    </ul>
-  </div>
-  <div id="social">
-    <svg class="icon" role="presentation" aria-hidden="true"><use href="/icons.svg#social-icon"></use></svg>
-    <h2>Connect with us</h2>
-    <p>Join the Vite community</p>
-    <ul>
-      <li><a href="https://github.com/vitejs/vite" target="_blank"><svg class="button-icon" role="presentation" aria-hidden="true"><use href="/icons.svg#github-icon"></use></svg>GitHub</a></li>
-      <li><a href="https://chat.vite.dev/" target="_blank"><svg class="button-icon" role="presentation" aria-hidden="true"><use href="/icons.svg#discord-icon"></use></svg>Discord</a></li>
-      <li><a href="https://x.com/vite_js" target="_blank"><svg class="button-icon" role="presentation" aria-hidden="true"><use href="/icons.svg#x-icon"></use></svg>X.com</a></li>
-      <li><a href="https://bsky.app/profile/vite.dev" target="_blank"><svg class="button-icon" role="presentation" aria-hidden="true"><use href="/icons.svg#bluesky-icon"></use></svg>Bluesky</a></li>
-    </ul>
-  </div>
-</section>
+// --- 4. SELECCIÓN DE ELEMENTOS DEL DOM ---
+const inputBusqueda = document.querySelector<HTMLInputElement>('#search-input');
+const contenedorTramites = document.querySelector<HTMLElement>('#contenedor-tramites');
+const btnNuevoTramite = document.querySelector<HTMLButtonElement>('#btn-nuevo-tramite');
 
-<div class="ticks"></div>
-<section id="spacer"></section>
-`
+// --- 5. LOGS DE CONTROL ---
+if (esUrgente) {
+   console.log(`¡Atención! El trámite ${nombreTramite} requiere acción inmediata.`);
+}
 
-setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
-*/
+console.log(`¡Hola ${nombreUsuario}! Bienvenido a ${appNombre}.`);
+console.log(`Estado actual: Filtrado por "${estadoFiltro}". Tienes ${totalTramites} trámites cargados.`);
