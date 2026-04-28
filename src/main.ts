@@ -75,3 +75,55 @@ console.log(`Estado actual: Filtrado por "${estadoFiltro}". Tienes ${totalTramit
 console.log(filtrarPorNombre("Pago de servicios", "pago")); // Debería dar true
 console.log(`El nuevo total es: ${totalTramites}`);
 console.log(`El nuevo estado del filtro es: ${estadoFiltro}`);
+
+// Definimos cómo luce un Trámite
+interface Tramite {
+    id: number;
+    titulo: string;
+    estado: 'pendiente' | 'finalizado';
+    prioridad: boolean;
+}
+
+// Nuestra lista de datos inicial
+const listaDeTramites: Tramite[] = [
+    { id: 1, titulo: "Renovación de Licencia", estado: 'pendiente', prioridad: true },
+    { id: 2, titulo: "Pago de Servicios", estado: 'finalizado', prioridad: false },
+    { id: 3, titulo: "Solicitud de Beca", estado: 'pendiente', prioridad: true },
+];
+
+// Queremos solo los trámites pendientes
+const pendientes = listaDeTramites.filter(t => t.estado === 'pendiente');
+console.log("Solo pendientes:", pendientes);
+
+// Queremos solo los títulos en mayúsculas
+const titulosMayusculas = listaDeTramites.map(t => t.titulo.toUpperCase());
+console.log(titulosMayusculas);
+
+// Buscar el trámite con ID 2
+const tramiteEncontrado = listaDeTramites.find(t => t.id === 2);
+
+
+// 1. Filtrar por prioridad
+const obtenerUrgentes = (): Tramite[] => {
+    return listaDeTramites.filter(tramite => tramite.prioridad === true);
+};
+
+console.log("Trámites Urgentes:", obtenerUrgentes());
+
+// 2. Contar cuántos están terminados
+const contarFinalizados = (): number => {
+    const finalizados = listaDeTramites.filter(t => t.estado === 'finalizado');
+    return finalizados.length;
+};
+
+console.log(`✅ Tienes ${contarFinalizados()} trámites finalizados.`);
+
+// 3. Buscador inteligente
+const buscarTramites = (palabra: string): Tramite[] => {
+    return listaDeTramites.filter(t => 
+        t.titulo.toLowerCase().includes(palabra.toLowerCase())
+    );
+};
+
+// Prueba: busca "beca" en tu consola
+console.log("🔍 Resultado de búsqueda:", buscarTramites("beca"));
