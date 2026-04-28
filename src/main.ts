@@ -127,3 +127,22 @@ const buscarTramites = (palabra: string): Tramite[] => {
 
 // Prueba: busca "beca" en tu consola
 console.log("🔍 Resultado de búsqueda:", buscarTramites("beca"));
+
+// 1. Extraemos solo lo que necesitamos del objeto trámite
+const mostrarDetalle = ({ titulo, estado }: Tramite): void => {
+    console.log(`📋 Procesando: ${titulo} | Estado actual: ${estado}`);
+};
+
+// Prueba: le pasamos el primer trámite de tu lista
+mostrarDetalle(listaDeTramites[0]);
+
+// 2. Creamos una copia exacta (útil para no dañar los datos originales)
+const copiaDeTramites = [...listaDeTramites];
+
+// 3. Creamos una nueva lista añadiendo un elemento al final de forma elegante
+const nuevaLista = [
+    ...listaDeTramites,
+    { id: 4, titulo: "Solicitud de Certificado", estado: 'pendiente', prioridad: false }
+];
+
+console.log("📂 Nueva lista con el trámite #4 añadido:", nuevaLista);
