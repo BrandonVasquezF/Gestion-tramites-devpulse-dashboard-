@@ -52,3 +52,24 @@ mostrarDetalle(listaDeTramites[0]);
 // Ejemplo de búsqueda dinámica
 const resultados = buscarTramites("Licencia");
 console.log("🔍 Resultado de búsqueda para 'Licencia':", resultados);
+
+// --- 6. EVENTOS (Día 20) ---
+
+// Escuchamos cuando el usuario escribe en el input
+inputBusqueda?.addEventListener('input', (event) => {
+    // 1. Capturamos el valor del input (lo que el usuario escribió)
+    const elemento = event.target as HTMLInputElement;
+    const valorBusqueda = elemento.value;
+
+    // 2. Usamos nuestra función lógica para filtrar
+    const resultados = buscarTramites(valorBusqueda);
+
+    // 3. Por ahora, mostramos los resultados en consola
+    console.log(`🔎 Buscando: "${valorBusqueda}"...`);
+    console.table(resultados); 
+});
+
+btnNuevoTramite?.addEventListener('click', () => {
+    alert("¡Pronto podrás añadir trámites desde aquí! 🚀");
+    // Aquí es donde en el futuro abrirías un modal o formulario
+});
