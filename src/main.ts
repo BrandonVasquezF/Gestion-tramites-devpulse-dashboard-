@@ -147,7 +147,8 @@ filtroFinalizados?.addEventListener('click', () => {
     renderizarTramites(filtrados);
 });
 
-filtroTodos?.addEventListener('click', () => renderizarTramites(cargarDeLocal()));
+filtroTodos?.addEventListener('click', () => renderizarTramites(cargarDeLocal())); 
+
 
 // --- INICIO ---
 renderizarTramites(cargarDeLocal());
