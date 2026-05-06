@@ -1,11 +1,10 @@
-// --- 1. IMPORTS (Limpios de variables no usadas) ---
+// --- 1. IMPORTS (Limpios) ---
 import './style.css'
 import { 
   createIcons, Clock, CheckCircle2, AlertCircle, 
   Search, PlusCircle, ArchiveX, Plus, List, Layers, Bell 
 } from 'lucide';
 
-// Quitamos buscarTramites porque no se usa según el error TS6133
 import { listaDeTramites, type Tramite } from './tramites.ts';
 
 // --- 2. ELEMENTOS DEL DOM ---
@@ -26,7 +25,7 @@ const filtroFinalizados = document.querySelector('#filtro-finalizados');
 // --- 3. PERSISTENCIA ---
 const cargarDeLocal = (): Tramite[] => {
     const datos = localStorage.getItem('tramites_db');
-    return datos ? JSON.parse(datos) : listaDeTramites;
+    return datos ? JSON.parse(datos) as Tramite[] : listaDeTramites;
 };
 
 const guardarEnLocal = (tramites: Tramite[]) => {
@@ -40,7 +39,7 @@ const renderizarTramites = (lista: Tramite[]) => {
 
     lista.forEach(tramite => {
         const item = document.createElement('div');
-        item.className = "flex items-center justify-between p-4 bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-100 dark:border-slate-700 mb-3 hover:shadow-md transition-all animate-in fade-in slide-in-from-bottom-2";
+        item.className = "flex items-center justify-between p-4 bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-100 dark:border-slate-700 mb-3 hover:shadow-md transition-all";
         
         item.innerHTML = `
             <div class="flex items-center gap-4">
@@ -92,18 +91,6 @@ const conectarEventosDinamicos = () => {
             renderizarTramites(actuales);
         });
     });
-
-    document.querySelectorAll('.titulo-tramite').forEach(el => {
-        el.addEventListener('click', (e) => {
-            const id = Number((e.currentTarget as HTMLElement).dataset.id);
-            const nuevoTitulo = window.prompt("Nuevo nombre del trámite:");
-            if (nuevoTitulo) {
-                const actuales = cargarDeLocal().map(t => t.id === id ? { ...t, titulo: nuevoTitulo } : t);
-                guardarEnLocal(actuales);
-                renderizarTramites(actuales);
-            }
-        });
-    });
 };
 
 // --- 6. LÓGICA DEL MODAL ---
@@ -136,23 +123,20 @@ btnModalGuardar?.addEventListener('click', () => {
     }
 });
 
-// --- 7. BUSCADOR Y FILTROS (Arreglo para errores TS2345) ---
+// --- 7. BUSCADOR Y FILTROS (ASERCIONES DE TIPO PARA VERCEL) ---
 inputBusqueda?.addEventListener('input', (e) => {
     const valor = (e.target as HTMLInputElement).value.toLowerCase();
-    const todos = cargarDeLocal();
-    const filtrados = todos.filter(t => t.titulo.toLowerCase().includes(valor));
+    const filtrados = cargarDeLocal().filter(t => t.titulo.toLowerCase().includes(valor)) as Tramite[];
     renderizarTramites(filtrados);
 });
 
 filtroPendientes?.addEventListener('click', () => {
-    const todos = cargarDeLocal();
-    const filtrados = todos.filter(t => t.estado === 'pendiente');
+    const filtrados = cargarDeLocal().filter(t => t.estado === 'pendiente') as Tramite[];
     renderizarTramites(filtrados);
 });
 
 filtroFinalizados?.addEventListener('click', () => {
-    const todos = cargarDeLocal();
-    const filtrados = todos.filter(t => t.estado === 'finalizado');
+    const filtrados = cargarDeLocal().filter(t => t.estado === 'finalizado') as Tramite[];
     renderizarTramites(filtrados);
 });
 
