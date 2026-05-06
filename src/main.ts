@@ -1,11 +1,11 @@
-// --- 1. IMPORTS (Limpios para evitar advertencias de TS) ---
+// --- 1. IMPORTS (Limpios de variables no usadas) ---
 import './style.css'
 import { 
   createIcons, Clock, CheckCircle2, AlertCircle, 
   Search, PlusCircle, ArchiveX, Plus, List, Layers, Bell 
 } from 'lucide';
 
-import { buscarTramites } from './logica.ts';
+// Quitamos buscarTramites porque no se usa según el error TS6133
 import { listaDeTramites, type Tramite } from './tramites.ts';
 
 // --- 2. ELEMENTOS DEL DOM ---
@@ -13,19 +13,17 @@ const inputBusqueda = document.querySelector<HTMLInputElement>('#search-input');
 const contenedorTramites = document.querySelector<HTMLElement>('#contenedor-tramites');
 const btnNuevoTramite = document.querySelector<HTMLButtonElement>('#btn-nuevo-tramite');
 
-// Referencias del Modal
 const modal = document.querySelector('#modal-tramite');
 const inputModalNombre = document.querySelector<HTMLInputElement>('#modal-input-nombre');
 const checkModalUrgente = document.querySelector<HTMLInputElement>('#modal-input-urgente');
 const btnModalCancelar = document.querySelector('#btn-modal-cancelar');
 const btnModalGuardar = document.querySelector('#btn-modal-guardar');
 
-// Filtros laterales
 const filtroTodos = document.querySelector('#filtro-todos');
 const filtroPendientes = document.querySelector('#filtro-pendientes');
 const filtroFinalizados = document.querySelector('#filtro-finalizados');
 
-// --- 3. PERSISTENCIA (LocalStorage) ---
+// --- 3. PERSISTENCIA ---
 const cargarDeLocal = (): Tramite[] => {
     const datos = localStorage.getItem('tramites_db');
     return datos ? JSON.parse(datos) : listaDeTramites;
@@ -69,9 +67,8 @@ const renderizarTramites = (lista: Tramite[]) => {
     conectarEventosDinamicos();
 };
 
-// --- 5. EVENTOS DINÁMICOS (Corregidos para Vercel) ---
+// --- 5. EVENTOS DINÁMICOS ---
 const conectarEventosDinamicos = () => {
-    // Eliminar
     document.querySelectorAll('.btn-eliminar').forEach(btn => {
         btn.addEventListener('click', (e) => {
             const id = Number((e.currentTarget as HTMLButtonElement).dataset.id);
@@ -81,13 +78,12 @@ const conectarEventosDinamicos = () => {
         });
     });
 
-    // Cambiar Estado (Solución al error de tipos)
     document.querySelectorAll('.btn-estado').forEach(btn => {
         btn.addEventListener('click', (e) => {
             const id = Number((e.currentTarget as HTMLButtonElement).dataset.id);
             const actuales = cargarDeLocal().map(t => {
                 if (t.id === id) {
-                    const nuevoEstado = t.estado === 'pendiente' ? 'finalizado' as const : 'pendiente' as const;
+                    const nuevoEstado: "pendiente" | "finalizado" = t.estado === 'pendiente' ? 'finalizado' : 'pendiente';
                     return { ...t, estado: nuevoEstado };
                 }
                 return t;
@@ -97,7 +93,6 @@ const conectarEventosDinamicos = () => {
         });
     });
 
-    // Editar Título
     document.querySelectorAll('.titulo-tramite').forEach(el => {
         el.addEventListener('click', (e) => {
             const id = Number((e.currentTarget as HTMLElement).dataset.id);
@@ -127,15 +122,13 @@ btnModalCancelar?.addEventListener('click', cerrarModal);
 
 btnModalGuardar?.addEventListener('click', () => {
     const nombre = inputModalNombre?.value;
-    
     if (nombre && nombre.trim() !== "") {
         const nuevo: Tramite = {
             id: Date.now(),
             titulo: nombre,
-            estado: 'pendiente' as const, // Corrección para TS
+            estado: 'pendiente',
             prioridad: checkModalUrgente?.checked || false
         };
-
         const actuales = [...cargarDeLocal(), nuevo];
         guardarEnLocal(actuales);
         renderizarTramites(actuales);
@@ -143,24 +136,26 @@ btnModalGuardar?.addEventListener('click', () => {
     }
 });
 
-// --- 7. BUSCADOR Y FILTROS ---
+// --- 7. BUSCADOR Y FILTROS (Arreglo para errores TS2345) ---
 inputBusqueda?.addEventListener('input', (e) => {
-    const valor = (e.target as HTMLInputElement).value;
-    const filtrados = cargarDeLocal().filter(t => t.titulo.toLowerCase().includes(valor.toLowerCase()));
+    const valor = (e.target as HTMLInputElement).value.toLowerCase();
+    const todos = cargarDeLocal();
+    const filtrados = todos.filter(t => t.titulo.toLowerCase().includes(valor));
     renderizarTramites(filtrados);
 });
 
 filtroPendientes?.addEventListener('click', () => {
-    const filtrados = cargarDeLocal().filter(t => t.estado === 'pendiente');
+    const todos = cargarDeLocal();
+    const filtrados = todos.filter(t => t.estado === 'pendiente');
     renderizarTramites(filtrados);
 });
 
 filtroFinalizados?.addEventListener('click', () => {
-    const filtrados = cargarDeLocal().filter(t => t.estado === 'finalizado');
+    const todos = cargarDeLocal();
+    const filtrados = todos.filter(t => t.estado === 'finalizado');
     renderizarTramites(filtrados);
 });
 
 filtroTodos?.addEventListener('click', () => renderizarTramites(cargarDeLocal()));
 
-// Inicio
 renderizarTramites(cargarDeLocal());
