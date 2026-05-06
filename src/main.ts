@@ -1,75 +1,169 @@
-// --- 1. IMPORTS DE LIBRERÍAS EXTERNAS ---
+// --- 1. IMPORTS ---
 import './style.css'
 import { 
   createIcons, Home, Briefcase, User, Clock, 
   CheckCircle2, AlertCircle, Bell, Layers, 
-  Search, PlusCircle, ArchiveX, Plus 
+  Search, PlusCircle, ArchiveX, Plus, List 
 } from 'lucide';
 
-// --- 2. IMPORTS DE TUS PROPIOS MÓDULOS (Lo nuevo del Día 19) ---
-// Traemos los datos y la lógica desde sus respectivos archivos
-import { listaDeTramites } from './tramites';
-import { 
-    obtenerUrgentes, 
-    contarFinalizados, 
-    buscarTramites, 
-    mostrarDetalle 
-} from './logica.ts';
+import { buscarTramites } from './logica.ts';
+import { listaDeTramites, type Tramite } from './tramites.ts';
 
-// --- 3. CONFIGURACIONES (Iconos y Modo Oscuro) ---
-createIcons({
-  icons: { Home, Briefcase, User, Clock, CheckCircle2, AlertCircle, Bell, Layers, Search, PlusCircle, ArchiveX, Plus },
-});
-
-if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-  document.documentElement.classList.add('dark');
-}
-
-// --- 4. VARIABLES GLOBALES Y ELEMENTOS DEL DOM ---
-const appNombre: string = "DevPulse Dashboard";
-const nombreUsuario: string = "Brandon";
-
+// --- 2. ELEMENTOS DEL DOM ---
 const inputBusqueda = document.querySelector<HTMLInputElement>('#search-input');
 const contenedorTramites = document.querySelector<HTMLElement>('#contenedor-tramites');
 const btnNuevoTramite = document.querySelector<HTMLButtonElement>('#btn-nuevo-tramite');
 
-// --- 5. EJECUCIÓN DE LA LÓGICA ---
+// Filtros laterales
+const filtroTodos = document.querySelector('#filtro-todos');
+const filtroPendientes = document.querySelector('#filtro-pendientes');
+const filtroFinalizados = document.querySelector('#filtro-finalizados');
 
-// Mensajes de bienvenida
-console.log(`¡Hola ${nombreUsuario}! Bienvenido a ${appNombre}.`);
-console.log(`Tienes un total de ${listaDeTramites.length} trámites cargados.`);
+// --- 3. PERSISTENCIA (LocalStorage) ---
+const cargarDeLocal = (): Tramite[] => {
+    const datos = localStorage.getItem('tramites_db');
+    return datos ? JSON.parse(datos) : listaDeTramites;
+};
 
-// Usamos nuestras funciones importadas de logica.ts
-const urgentes = obtenerUrgentes();
-console.log("🔥 Trámites que requieren atención:", urgentes);
+const guardarEnLocal = (tramites: Tramite[]) => {
+    localStorage.setItem('tramites_db', JSON.stringify(tramites));
+};
 
-const finalizadosCount = contarFinalizados();
-console.log(`✅ Has completado ${finalizadosCount} trámites.`);
+// --- 4. RENDERIZADO (Dibujar en pantalla) ---
+const renderizarTramites = (lista: Tramite[]) => {
+    if (!contenedorTramites) return;
+    contenedorTramites.innerHTML = '';
 
-// Probamos la desestructuración con el primer trámite de la lista
-mostrarDetalle(listaDeTramites[0]);
+    lista.forEach(tramite => {
+        const item = document.createElement('div');
+        item.className = "flex items-center justify-between p-4 bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-100 dark:border-slate-700 mb-3 hover:shadow-md transition-all animate-in fade-in slide-in-from-bottom-2";
+        
+        item.innerHTML = `
+            <div class="flex items-center gap-4">
+                <div class="p-2 ${tramite.prioridad ? 'bg-orange-100 text-orange-600' : 'bg-blue-100 text-blue-600'} rounded-lg">
+                    <i data-lucide="${tramite.prioridad ? 'alert-circle' : 'clock'}"></i>
+                </div>
+                <div>
+                    <h3 class="titulo-tramite font-semibold text-slate-800 dark:text-slate-100 cursor-pointer hover:text-blue-500" data-id="${tramite.id}">
+                        ${tramite.titulo}
+                    </h3>
+                    <button class="btn-estado text-xs font-medium px-2 py-0.5 rounded-full ${tramite.estado === 'finalizado' ? 'bg-green-100 text-green-700' : 'bg-slate-100 text-slate-600'}" data-id="${tramite.id}">
+                        ${tramite.estado.toUpperCase()}
+                    </button>
+                </div>
+            </div>
+            <button class="btn-eliminar p-2 text-slate-400 hover:text-red-500 transition-colors" data-id="${tramite.id}">
+                <i data-lucide="archive-x"></i>
+            </button>
+        `;
+        contenedorTramites.appendChild(item);
+    });
 
-// Ejemplo de búsqueda dinámica
-const resultados = buscarTramites("Licencia");
-console.log("🔍 Resultado de búsqueda para 'Licencia':", resultados);
+    // Reactivar iconos de Lucide
+    createIcons({ icons: { Home, Briefcase, User, Clock, CheckCircle2, AlertCircle, Bell, Layers, Search, PlusCircle, ArchiveX, Plus, List } });
+    conectarEventosDinamicos();
+};
 
-// --- 6. EVENTOS (Día 20) ---
+// --- 5. EVENTOS DINÁMICOS (Borrar, Estado, Editar) ---
+const conectarEventosDinamicos = () => {
+    // Eliminar
+    document.querySelectorAll('.btn-eliminar').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const id = Number((e.currentTarget as HTMLButtonElement).dataset.id);
+            const nuevos = cargarDeLocal().filter(t => t.id !== id);
+            guardarEnLocal(nuevos);
+            renderizarTramites(nuevos);
+        });
+    });
 
-// Escuchamos cuando el usuario escribe en el input
-inputBusqueda?.addEventListener('input', (event) => {
-    // 1. Capturamos el valor del input (lo que el usuario escribió)
-    const elemento = event.target as HTMLInputElement;
-    const valorBusqueda = elemento.value;
+    // Cambiar Estado
+    document.querySelectorAll('.btn-estado').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const id = Number((e.currentTarget as HTMLButtonElement).dataset.id);
+            const actuales = cargarDeLocal().map(t => 
+                t.id === id ? { ...t, estado: t.estado === 'pendiente' ? 'finalizado' : 'pendiente' } : t
+            );
+            guardarEnLocal(actuales);
+            renderizarTramites(actuales);
+        });
+    });
 
-    // 2. Usamos nuestra función lógica para filtrar
-    const resultados = buscarTramites(valorBusqueda);
+    // Editar Título
+    document.querySelectorAll('.titulo-tramite').forEach(el => {
+        el.addEventListener('click', (e) => {
+            const id = Number((e.currentTarget as HTMLElement).dataset.id);
+            const nuevoTitulo = window.prompt("Nuevo nombre del trámite:");
+            if (nuevoTitulo) {
+                const actuales = cargarDeLocal().map(t => t.id === id ? { ...t, titulo: nuevoTitulo } : t);
+                guardarEnLocal(actuales);
+                renderizarTramites(actuales);
+            }
+        });
+    });
+};
 
-    // 3. Por ahora, mostramos los resultados en consola
-    console.log(`🔎 Buscando: "${valorBusqueda}"...`);
-    console.table(resultados); 
-});
+// --- 6. EVENTO: NUEVO TRÁMITE ---
+// --- REFERENCIAS NUEVAS DEL MODAL ---
+const modal = document.querySelector('#modal-tramite');
+const inputModalNombre = document.querySelector<HTMLInputElement>('#modal-input-nombre');
+const checkModalUrgente = document.querySelector<HTMLInputElement>('#modal-input-urgente');
+const btnModalCancelar = document.querySelector('#btn-modal-cancelar');
+const btnModalGuardar = document.querySelector('#btn-modal-guardar');
 
+// Abrir Modal
 btnNuevoTramite?.addEventListener('click', () => {
-    alert("¡Pronto podrás añadir trámites desde aquí! 🚀");
-    // Aquí es donde en el futuro abrirías un modal o formulario
+    modal?.classList.remove('hidden');
+    inputModalNombre?.focus();
 });
+
+// Cerrar Modal
+const cerrarModal = () => {
+    modal?.classList.add('hidden');
+    if (inputModalNombre) inputModalNombre.value = '';
+    if (checkModalUrgente) checkModalUrgente.checked = false;
+};
+
+btnModalCancelar?.addEventListener('click', cerrarModal);
+
+// Guardar desde el Modal (Create)
+btnModalGuardar?.addEventListener('click', () => {
+    const nombre = inputModalNombre?.value;
+    
+    if (nombre && nombre.trim() !== "") {
+        const nuevo: Tramite = {
+            id: Date.now(),
+            titulo: nombre,
+            estado: 'pendiente',
+            prioridad: checkModalUrgente?.checked || false
+        };
+
+        const actuales = [...cargarDeLocal(), nuevo];
+        guardarEnLocal(actuales);
+        renderizarTramites(actuales);
+        cerrarModal();
+    } else {
+        alert("Por favor, escribe un nombre para el trámite.");
+    }
+});
+
+// --- 7. BUSCADOR Y FILTROS LATERALES ---
+inputBusqueda?.addEventListener('input', (e) => {
+    const valor = (e.target as HTMLInputElement).value;
+    const filtrados = cargarDeLocal().filter(t => t.titulo.toLowerCase().includes(valor.toLowerCase()));
+    renderizarTramites(filtrados);
+});
+
+filtroPendientes?.addEventListener('click', () => {
+    const filtrados = cargarDeLocal().filter(t => t.estado === 'pendiente');
+    renderizarTramites(filtrados);
+});
+
+filtroFinalizados?.addEventListener('click', () => {
+    const filtrados = cargarDeLocal().filter(t => t.estado === 'finalizado');
+    renderizarTramites(filtrados);
+});
+
+filtroTodos?.addEventListener('click', () => renderizarTramites(cargarDeLocal()));
+
+// --- 8. INICIO DE LA APP ---
+renderizarTramites(cargarDeLocal());
