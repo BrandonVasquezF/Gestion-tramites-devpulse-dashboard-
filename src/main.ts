@@ -1,4 +1,4 @@
-// --- 1. IMPORTS (Limpios) ---
+// --- 1. IMPORTS ---
 import './style.css'
 import { 
   createIcons, Clock, CheckCircle2, AlertCircle, 
@@ -22,10 +22,16 @@ const filtroTodos = document.querySelector('#filtro-todos');
 const filtroPendientes = document.querySelector('#filtro-pendientes');
 const filtroFinalizados = document.querySelector('#filtro-finalizados');
 
-// --- 3. PERSISTENCIA ---
+// --- 3. PERSISTENCIA (Corregida para evitar errores de tipo string) ---
 const cargarDeLocal = (): Tramite[] => {
     const datos = localStorage.getItem('tramites_db');
-    return datos ? JSON.parse(datos) as Tramite[] : listaDeTramites;
+    if (!datos) return listaDeTramites;
+    try {
+        // Forzamos a que TS entienda que esto es un array de Tramite
+        return JSON.parse(datos) as Tramite[];
+    } catch {
+        return listaDeTramites;
+    }
 };
 
 const guardarEnLocal = (tramites: Tramite[]) => {
@@ -82,6 +88,7 @@ const conectarEventosDinamicos = () => {
             const id = Number((e.currentTarget as HTMLButtonElement).dataset.id);
             const actuales = cargarDeLocal().map(t => {
                 if (t.id === id) {
+                    // Aseguramos que el estado sea estrictamente uno de los dos tipos
                     const nuevoEstado: "pendiente" | "finalizado" = t.estado === 'pendiente' ? 'finalizado' : 'pendiente';
                     return { ...t, estado: nuevoEstado };
                 }
@@ -113,7 +120,7 @@ btnModalGuardar?.addEventListener('click', () => {
         const nuevo: Tramite = {
             id: Date.now(),
             titulo: nombre,
-            estado: 'pendiente',
+            estado: 'pendiente' as const, // Garantiza el tipo exacto
             prioridad: checkModalUrgente?.checked || false
         };
         const actuales = [...cargarDeLocal(), nuevo];
@@ -123,23 +130,24 @@ btnModalGuardar?.addEventListener('click', () => {
     }
 });
 
-// --- 7. BUSCADOR Y FILTROS (ASERCIONES DE TIPO PARA VERCEL) ---
+// --- 7. BUSCADOR Y FILTROS (ASERCIONES DE TIPO EXPLÍCITAS) ---
 inputBusqueda?.addEventListener('input', (e) => {
     const valor = (e.target as HTMLInputElement).value.toLowerCase();
-    const filtrados = cargarDeLocal().filter(t => t.titulo.toLowerCase().includes(valor)) as Tramite[];
+    const filtrados = (cargarDeLocal() as Tramite[]).filter(t => t.titulo.toLowerCase().includes(valor));
     renderizarTramites(filtrados);
 });
 
 filtroPendientes?.addEventListener('click', () => {
-    const filtrados = cargarDeLocal().filter(t => t.estado === 'pendiente') as Tramite[];
+    const filtrados = (cargarDeLocal() as Tramite[]).filter(t => t.estado === 'pendiente');
     renderizarTramites(filtrados);
 });
 
 filtroFinalizados?.addEventListener('click', () => {
-    const filtrados = cargarDeLocal().filter(t => t.estado === 'finalizado') as Tramite[];
+    const filtrados = (cargarDeLocal() as Tramite[]).filter(t => t.estado === 'finalizado');
     renderizarTramites(filtrados);
 });
 
 filtroTodos?.addEventListener('click', () => renderizarTramites(cargarDeLocal()));
 
+// --- INICIO ---
 renderizarTramites(cargarDeLocal());
