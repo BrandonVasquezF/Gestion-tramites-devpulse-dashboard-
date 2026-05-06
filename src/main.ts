@@ -1,9 +1,8 @@
-// --- 1. IMPORTS ---
+// --- 1. IMPORTS (Limpios para evitar advertencias de TS) ---
 import './style.css'
 import { 
-  createIcons, Home, Briefcase, User, Clock, 
-  CheckCircle2, AlertCircle, Bell, Layers, 
-  Search, PlusCircle, ArchiveX, Plus, List 
+  createIcons, Clock, CheckCircle2, AlertCircle, 
+  Search, PlusCircle, ArchiveX, Plus, List, Layers, Bell 
 } from 'lucide';
 
 import { buscarTramites } from './logica.ts';
@@ -13,6 +12,13 @@ import { listaDeTramites, type Tramite } from './tramites.ts';
 const inputBusqueda = document.querySelector<HTMLInputElement>('#search-input');
 const contenedorTramites = document.querySelector<HTMLElement>('#contenedor-tramites');
 const btnNuevoTramite = document.querySelector<HTMLButtonElement>('#btn-nuevo-tramite');
+
+// Referencias del Modal
+const modal = document.querySelector('#modal-tramite');
+const inputModalNombre = document.querySelector<HTMLInputElement>('#modal-input-nombre');
+const checkModalUrgente = document.querySelector<HTMLInputElement>('#modal-input-urgente');
+const btnModalCancelar = document.querySelector('#btn-modal-cancelar');
+const btnModalGuardar = document.querySelector('#btn-modal-guardar');
 
 // Filtros laterales
 const filtroTodos = document.querySelector('#filtro-todos');
@@ -29,7 +35,7 @@ const guardarEnLocal = (tramites: Tramite[]) => {
     localStorage.setItem('tramites_db', JSON.stringify(tramites));
 };
 
-// --- 4. RENDERIZADO (Dibujar en pantalla) ---
+// --- 4. RENDERIZADO ---
 const renderizarTramites = (lista: Tramite[]) => {
     if (!contenedorTramites) return;
     contenedorTramites.innerHTML = '';
@@ -59,12 +65,11 @@ const renderizarTramites = (lista: Tramite[]) => {
         contenedorTramites.appendChild(item);
     });
 
-    // Reactivar iconos de Lucide
-    createIcons({ icons: { Home, Briefcase, User, Clock, CheckCircle2, AlertCircle, Bell, Layers, Search, PlusCircle, ArchiveX, Plus, List } });
+    createIcons({ icons: { Clock, CheckCircle2, AlertCircle, Search, PlusCircle, ArchiveX, Plus, List, Layers, Bell } });
     conectarEventosDinamicos();
 };
 
-// --- 5. EVENTOS DINÁMICOS (Borrar, Estado, Editar) ---
+// --- 5. EVENTOS DINÁMICOS (Corregidos para Vercel) ---
 const conectarEventosDinamicos = () => {
     // Eliminar
     document.querySelectorAll('.btn-eliminar').forEach(btn => {
@@ -76,13 +81,17 @@ const conectarEventosDinamicos = () => {
         });
     });
 
-    // Cambiar Estado
+    // Cambiar Estado (Solución al error de tipos)
     document.querySelectorAll('.btn-estado').forEach(btn => {
         btn.addEventListener('click', (e) => {
             const id = Number((e.currentTarget as HTMLButtonElement).dataset.id);
-            const actuales = cargarDeLocal().map(t => 
-                t.id === id ? { ...t, estado: t.estado === 'pendiente' ? 'finalizado' : 'pendiente' } : t
-            );
+            const actuales = cargarDeLocal().map(t => {
+                if (t.id === id) {
+                    const nuevoEstado = t.estado === 'pendiente' ? 'finalizado' as const : 'pendiente' as const;
+                    return { ...t, estado: nuevoEstado };
+                }
+                return t;
+            });
             guardarEnLocal(actuales);
             renderizarTramites(actuales);
         });
@@ -102,30 +111,20 @@ const conectarEventosDinamicos = () => {
     });
 };
 
-// --- 6. EVENTO: NUEVO TRÁMITE ---
-// --- REFERENCIAS NUEVAS DEL MODAL ---
-const modal = document.querySelector('#modal-tramite');
-const inputModalNombre = document.querySelector<HTMLInputElement>('#modal-input-nombre');
-const checkModalUrgente = document.querySelector<HTMLInputElement>('#modal-input-urgente');
-const btnModalCancelar = document.querySelector('#btn-modal-cancelar');
-const btnModalGuardar = document.querySelector('#btn-modal-guardar');
-
-// Abrir Modal
-btnNuevoTramite?.addEventListener('click', () => {
-    modal?.classList.remove('hidden');
-    inputModalNombre?.focus();
-});
-
-// Cerrar Modal
+// --- 6. LÓGICA DEL MODAL ---
 const cerrarModal = () => {
     modal?.classList.add('hidden');
     if (inputModalNombre) inputModalNombre.value = '';
     if (checkModalUrgente) checkModalUrgente.checked = false;
 };
 
+btnNuevoTramite?.addEventListener('click', () => {
+    modal?.classList.remove('hidden');
+    inputModalNombre?.focus();
+});
+
 btnModalCancelar?.addEventListener('click', cerrarModal);
 
-// Guardar desde el Modal (Create)
 btnModalGuardar?.addEventListener('click', () => {
     const nombre = inputModalNombre?.value;
     
@@ -133,7 +132,7 @@ btnModalGuardar?.addEventListener('click', () => {
         const nuevo: Tramite = {
             id: Date.now(),
             titulo: nombre,
-            estado: 'pendiente',
+            estado: 'pendiente' as const, // Corrección para TS
             prioridad: checkModalUrgente?.checked || false
         };
 
@@ -141,12 +140,10 @@ btnModalGuardar?.addEventListener('click', () => {
         guardarEnLocal(actuales);
         renderizarTramites(actuales);
         cerrarModal();
-    } else {
-        alert("Por favor, escribe un nombre para el trámite.");
     }
 });
 
-// --- 7. BUSCADOR Y FILTROS LATERALES ---
+// --- 7. BUSCADOR Y FILTROS ---
 inputBusqueda?.addEventListener('input', (e) => {
     const valor = (e.target as HTMLInputElement).value;
     const filtrados = cargarDeLocal().filter(t => t.titulo.toLowerCase().includes(valor.toLowerCase()));
@@ -165,5 +162,5 @@ filtroFinalizados?.addEventListener('click', () => {
 
 filtroTodos?.addEventListener('click', () => renderizarTramites(cargarDeLocal()));
 
-// --- 8. INICIO DE LA APP ---
+// Inicio
 renderizarTramites(cargarDeLocal());
